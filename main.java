@@ -1,6 +1,10 @@
 import java.util.*;
 
 public class Main {
+
+    static List<List<Integer>> graph;
+    static boolean[] visited;
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
@@ -9,13 +13,11 @@ public class Main {
         int b = sc.nextInt();
         int m = sc.nextInt();
 
-        // 인접 리스트 생성 (1번부터 쓰기 위해 n+1 크기)
-        List<List<Integer>> graph = new ArrayList<>();
+        graph = new ArrayList<>();
         for (int i = 0; i <= n; i++) {
             graph.add(new ArrayList<>());
         }
 
-        // 양방향 연결
         for (int i = 0; i < m; i++) {
             int x = sc.nextInt();
             int y = sc.nextInt();
@@ -23,7 +25,31 @@ public class Main {
             graph.get(y).add(x);
         }
 
-        System.out.println("그래프 구성 완료");
-        System.out.println("1번 노드 연결: " + graph.get(1));
+        visited = new boolean[n + 1];
+        int result = bfs(a, b);
+        System.out.println(result);
+    }
+
+    static int bfs(int start, int target) {
+        Queue<int[]> queue = new LinkedList<>();
+        // {현재 노드, 현재까지 거리}
+        queue.offer(new int[]{start, 0});
+        visited[start] = true;
+
+        while (!queue.isEmpty()) {
+            int[] cur = queue.poll();
+            int node = cur[0];
+            int dist = cur[1];
+
+            if (node == target) return dist;
+
+            for (int next : graph.get(node)) {
+                if (!visited[next]) {
+                    visited[next] = true;
+                    queue.offer(new int[]{next, dist + 1});
+                }
+            }
+        }
+        return -1; // 연결 없음
     }
 }
