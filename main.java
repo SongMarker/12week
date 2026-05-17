@@ -1,20 +1,29 @@
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
-        int n = sc.nextInt();       // 전체 사람 수
-        int a = sc.nextInt();       // 촌수 구할 사람 1
-        int b = sc.nextInt();       // 촌수 구할 사람 2
-        int m = sc.nextInt();       // 관계 수
+        int n = sc.nextInt();
+        int a = sc.nextInt();
+        int b = sc.nextInt();
+        int m = sc.nextInt();
 
-        int[][] relations = new int[m][2];
-        for (int i = 0; i < m; i++) {
-            relations[i][0] = sc.nextInt(); // 부모
-            relations[i][1] = sc.nextInt(); // 자식
+        // 인접 리스트 생성 (1번부터 쓰기 위해 n+1 크기)
+        List<List<Integer>> graph = new ArrayList<>();
+        for (int i = 0; i <= n; i++) {
+            graph.add(new ArrayList<>());
         }
 
-        System.out.println("n=" + n + " a=" + a + " b=" + b + " m=" + m);
+        // 양방향 연결
+        for (int i = 0; i < m; i++) {
+            int x = sc.nextInt();
+            int y = sc.nextInt();
+            graph.get(x).add(y);
+            graph.get(y).add(x);
+        }
+
+        System.out.println("그래프 구성 완료");
+        System.out.println("1번 노드 연결: " + graph.get(1));
     }
 }
